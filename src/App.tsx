@@ -1,9 +1,9 @@
 import React, { useLayoutEffect } from "react";
 import { Routes, Route, useLocation } from "react-router";
-import Login from "./screens/Login";
-import Dashboard from "./screens/Dashboard";
 import { useSelector } from "react-redux";
 import type { RootState } from "./store/store";
+const Login = React.lazy(() => import("./screens/Login"));
+const Dashboard = React.lazy(() => import("./screens/Dashboard"));
 const Error = React.lazy(() => import("./components/common/Error"));
 const Success = React.lazy(() => import("./components/common/Success"));
 const PublicRoute = React.lazy(() => import("./components/common/PublicRoute"));

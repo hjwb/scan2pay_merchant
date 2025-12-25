@@ -31,22 +31,43 @@ export default defineConfig({
         display: "standalone",
         scope: "/merchant/",
         start_url: "/merchant/",
+        screenshots: [
+          {
+            src: "four1.png",
+            sizes: "512x512",
+            type: "image/png",
+            form_factor: "wide",
+          },
+          {
+            src: "four1.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
         icons: [
           {
-            src: "three.png",
+            src: "three1.png",
             sizes: "192x192",
             type: "image/png",
+            purpose: "any",
           },
           {
-            src: "four.png",
+            src: "four1.png",
             sizes: "512x512",
             type: "image/png",
+            purpose: "any",
           },
           {
-            src: "four.png",
+            src: "three1.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "maskable",
+          },
+          {
+            src: "four1.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any maskable",
+            purpose: "maskable",
           },
         ],
       },
