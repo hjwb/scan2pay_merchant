@@ -12,7 +12,7 @@ const Login: React.FC = () => {
             <img className="logo" src="icon.jpeg" alt="icon" width={100} />
             <TextAnimate>Scan2Pay.direct Merchant</TextAnimate>
           </div>
-          <TextAnimate className="font-semibold mt-3">
+          <TextAnimate className="font-semibold mt-3 text-center">
             Sell your USDT BNB CHAIN/BEP20 ↔ INR(₹) Instantly
           </TextAnimate>
         </div>

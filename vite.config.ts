@@ -33,38 +33,38 @@ export default defineConfig({
         start_url: "/merchant/",
         screenshots: [
           {
-            src: "four1.png",
+            src: "big.png",
             sizes: "512x512",
             type: "image/png",
             form_factor: "wide",
           },
           {
-            src: "four1.png",
+            src: "big.png",
             sizes: "512x512",
             type: "image/png",
           },
         ],
         icons: [
           {
-            src: "three1.png",
+            src: "small.png",
             sizes: "192x192",
             type: "image/png",
             purpose: "any",
           },
           {
-            src: "four1.png",
+            src: "big.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any",
           },
           {
-            src: "three1.png",
+            src: "small.png",
             sizes: "192x192",
             type: "image/png",
             purpose: "maskable",
           },
           {
-            src: "four1.png",
+            src: "big.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "maskable",

@@ -266,12 +266,12 @@ const ScanConfirmation: React.FC = () => {
             />
           </div>
           <div className="space-y-2">
-            <Label>Transaction Id</Label>
+            <Label>Trxn Id / UTR Number</Label>
             <Input
               type="text"
               value={note}
               onChange={(e) => setNote(e.target.value)}
-              placeholder="Enter Transaction Id"
+              placeholder="Enter Transaction Id / UTR Number"
             />
           </div>
 

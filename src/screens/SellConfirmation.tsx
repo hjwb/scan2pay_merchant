@@ -327,14 +327,14 @@ const SellConfirmation: React.FC = () => {
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-600">
-                  Transaction ID
+                  Transaction ID / UTR Number
                 </label>
                 <input
                   type="text"
                   disabled={loading || confirmed}
                   value={transactionId}
                   onChange={(e) => setTransactionId(e.target.value)}
-                  placeholder="Enter Transaction ID"
+                  placeholder="Enter Transaction ID / UTR Number"
                   className="w-full mt-2 px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4D43EF] focus:border-transparent bg-white"
                 />
               </div>
