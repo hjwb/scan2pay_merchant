@@ -23,6 +23,8 @@ const ScanConfirmation: React.FC = () => {
   const [fees, setFees] = useState<number>(0);
   // const [showloader, setShowLoader] = useState(false);
 
+   const [screenshotRequired, setScreenshotRequired] = useState("0");
+
   const navigate = useNavigate();
   const { showSuccess } = useShowSuccess();
   const { showError } = useShowError();
@@ -71,6 +73,7 @@ const ScanConfirmation: React.FC = () => {
           return;
         }
         setUpiId(response?.data?.data?.merchant_upi_id);
+          setScreenshotRequired(response?.data?.data?.screenshot_status);
         if (response.data.status) {
           setData(response.data.data.order);
           setLoading(false);
@@ -102,6 +105,8 @@ const ScanConfirmation: React.FC = () => {
     if (data?.scan_upi) navigator.clipboard.writeText(data.scan_upi);
   };
 
+  //alert(screenshotRequired);
+
   const handleSubmit = async () => {
     try {
       setBtnLoading(true);
@@ -109,15 +114,22 @@ const ScanConfirmation: React.FC = () => {
 
       console.log({ uploadedImage });
 
-      if (!uploadedImage) {
-        showError("Please provide screenshot as proof.", "");
-        return;
-      }
+     
+
+   if (screenshotRequired === "1" && !uploadedImage) {
+     showError("Please provide screenshot as proof.", "");
+    return;
+    }
 
       formData.append("order_id", order_id);
       formData.append("upi_reference", note);
-      formData.append("screenshot", uploadedImage);
+    
       formData.append("upi_id", upiId);
+
+      
+      if (uploadedImage) {
+         formData.append("screenshot", uploadedImage);
+      }
 
       const response = await axios.post(
         `${baseUrl}/submit-scan-payment-proof`,
@@ -130,10 +142,12 @@ const ScanConfirmation: React.FC = () => {
         }
       );
       console.log("Submit response:", response.data);
-      if (response.data.status) {
+       if (response.data.status === true){
         showSuccess("Payment proof submitted successfully.", "");
         navigate("/dashboard");
         dispatch(setTrxSuccess({ showTrxSuccess: true }));
+      }else{
+       showError(response.data.message, "");
       }
     } catch (err) {
       console.error("Error submitting:", err);

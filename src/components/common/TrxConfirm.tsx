@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/store/store";
 import { setTrxSuccess } from "@/store/slices/modelSlice";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 
 interface ModalProps {
   open: boolean;
@@ -19,8 +19,11 @@ interface ModalProps {
 
 export default function SuccessModal({ open }: ModalProps) {
   const dispatch = useDispatch<AppDispatch>();
+   const [autoPlayEnabled] = useState(localStorage.getItem("auto_play_sound") === "1");
 
   useEffect(() => {
+
+    if (!autoPlayEnabled) return;
     const audio = new Audio("/merchant/audio1.wav");
     audio.play();
   }, []);

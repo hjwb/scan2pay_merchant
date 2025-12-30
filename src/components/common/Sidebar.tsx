@@ -13,6 +13,7 @@ import {
   MdDashboard,
   MdFormatListBulletedAdd,
   MdOutlinePendingActions,
+  MdDeleteForever
   // MdReportProblem,
 } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
@@ -97,6 +98,14 @@ const Sidebar: React.FC = () => {
       tag: "Dispute Status",
       click: () => {
         navigate("/dispute-details");
+      },
+    },
+    {
+      id: 11,
+      icon: MdDeleteForever,
+      tag: "Close Account",
+      click: () => {
+        navigate("/close-account");
       },
     },
     {

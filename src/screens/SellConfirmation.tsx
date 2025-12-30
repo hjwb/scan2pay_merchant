@@ -52,6 +52,7 @@ const SellConfirmation: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
+ const [screenshotRequired, setScreenshotRequired] = useState("0");
 
   const isMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
 
@@ -64,6 +65,8 @@ const SellConfirmation: React.FC = () => {
       console.log(error);
     }
   }
+
+  /** 
   useEffect(() => {
     // console.log(imagePreview);
     fetchFees();
@@ -74,7 +77,57 @@ const SellConfirmation: React.FC = () => {
       usdt: usdt ?? null,
       type: type ?? null,
     });
+
+       if (!upiId) setUpiId(upi_id);
   }, [orderid, upi_id, amount]);
+***/
+
+useEffect(() => {
+  const init = async () => {
+    try {
+      fetchFees();
+
+      setOrderData({
+        order_id: orderid ?? null,
+        upi_id: upi_id ?? null,
+        inr_amount: amount ?? null,
+        usdt: usdt ?? null,
+        type: type ?? null,
+      });
+
+      const response = await axios.post(
+        `${baseUrl}/merchant/get-payment-details
+ `,
+        { order_id: orderid },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      //console.log('testing');
+
+      console.log(response.data);
+
+     if (!upiId) setUpiId(response.data.merchant_upi_id);
+       setScreenshotRequired(response.data.screenshot_status);
+      // if (!upiId && upi_id) {
+      //   setUpiId(upi_id);
+      // }
+    } catch (error) {
+      console.error("Confirm order failed:", error);
+    }
+  };
+
+  if (orderid) {
+    init();
+  }
+}, [orderid, upi_id, amount]);
+
+
+
 
   const openPaytm = () => {
     const upiLink = `upi://pay?pa=${orderData?.upi_id}&am=${orderData?.inr_amount}&cu=INR&tn=Test%20Payment`;
@@ -112,12 +165,47 @@ const SellConfirmation: React.FC = () => {
     }
   };
 
+
+  
+       
+
+ useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const response = await axios.post(
+          `${baseUrl}/confirm-order-status`,
+          { order_id: orderid },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );  
+        console.log(response.data);
+     
+        
+      } catch (err) {
+        console.error("Order polling failed:", err);
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [orderid]);
+
+
+
+
+
+
+
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
 
-    if (!imageFile) {
-      showError("Please upload a screenshot.", "");
-      return;
+   
+   if (screenshotRequired === "1" && !imageFile) {
+     showError("Please provide screenshot as proof.", "");
+    return;
     }
 
     if (!transactionId.trim()) {
@@ -131,7 +219,11 @@ const SellConfirmation: React.FC = () => {
       formData.append("order_id", orderData?.order_id);
       formData.append("upi_reference", transactionId);
       formData.append("upi_id", upiId);
-      formData.append("screenshot", imageFile);
+    
+
+      if (imageFile) {
+        formData.append("screenshot", imageFile);
+      }
 
       console.log({ transactionId, imageFile });
       const response = await axios.post(
@@ -145,12 +237,14 @@ const SellConfirmation: React.FC = () => {
         }
       );
 
-      if (response.data.status) {
+      if (response.data.status === true) {
         showSuccess(
           "Payment proof submitted successfully.",
           "Please wait for the merchant to accept the payment release."
         );
         setConfirmed(true);
+      }else{
+         showError(response.data.message, "");
       }
     } catch (error) {
       console.log(error);
@@ -177,6 +271,8 @@ const SellConfirmation: React.FC = () => {
             },
           }
         );
+
+        //alert('ok');
 
         console.log(response.data);
         if (response.data.order_status === "completed") {
@@ -314,7 +410,7 @@ const SellConfirmation: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="text-sm font-medium text-gray-600">
-                  UPI ID
+                  UPI ID 
                 </label>
                 <input
                   type="text"

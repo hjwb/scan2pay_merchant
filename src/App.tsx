@@ -14,6 +14,8 @@ const Verification = React.lazy(
   () => import("./components/common/Verification")
 );
 const Profile = React.lazy(() => import("./screens/Profile"));
+
+const CloseAccount = React.lazy(() => import("./screens/CloseAccount"));
 const Transaction = React.lazy(() => import("./screens/Transaction"));
 const Wallet = React.lazy(() => import("./screens/Wallet"));
 const Confirmation = React.lazy(() => import("./screens/Confirmation"));
@@ -89,6 +91,7 @@ const App: React.FC = () => {
             <Route path="/processing-orders" element={<ProcessingRequests />} />
             {/* <Route path="/dispute" element={<Dispute />} /> */}
             <Route path="/dispute-details" element={<DisputeStatus />} />
+            <Route path="/close-account" element={<CloseAccount />} />
             <Route path="/dispute-form" element={<DisputeForm />} />
           </Route>
         </Routes>

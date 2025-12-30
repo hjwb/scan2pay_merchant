@@ -25,10 +25,10 @@ const DepositeForm: React.FC<DepositeFormProps> = ({ balance }) => {
   const [type, setType] = useState("USDT");
   // const [amount, setAmount] = useState("");
   const [amount2, setAmount2] = useState("");
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [receiverAddress, setReceiverAddress] = useState("");
-  const [otp, setOtp] = useState("");
+  //const [otp, setOtp] = useState("");
 
   const baseUrl = useSelector((state: RootState) => state?.consts?.baseUrl);
   const userData = useSelector((state: RootState) => state?.user?.userData);
@@ -67,7 +67,7 @@ const DepositeForm: React.FC<DepositeFormProps> = ({ balance }) => {
           amount: amount2,
           from_wallet_address: String(userData?.wallet_address || ""),
           to_wallet_address: receiverAddress,
-          otp,
+          //otp,
         },
         {
           headers: {
@@ -92,7 +92,7 @@ const DepositeForm: React.FC<DepositeFormProps> = ({ balance }) => {
       setLoading2(false);
     }
   };
-
+/***
   async function handleOtpSend() {
     try {
       setLoading(true);
@@ -117,6 +117,8 @@ const DepositeForm: React.FC<DepositeFormProps> = ({ balance }) => {
       setLoading(false);
     }
   }
+
+  ***/
 
   return (
     <>
@@ -221,7 +223,7 @@ const DepositeForm: React.FC<DepositeFormProps> = ({ balance }) => {
           onChange={(e) => setReceiverAddress(e.target.value)}
           className="flex-1 rounded-lg border shadow-sm"
         />
-        <div className="mt-2 flex gap-1">
+        {/* <div className="mt-2 flex gap-1">
           <Input
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
@@ -235,7 +237,7 @@ const DepositeForm: React.FC<DepositeFormProps> = ({ balance }) => {
           >
             {loading ? "Sending.." : "Send Otp"}
           </button>
-        </div>
+        </div> */}
         <Button
           onClick={handleSubmit2}
           disabled={loading2 || !amount2}

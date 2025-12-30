@@ -12,6 +12,7 @@ import { useNavigate } from "react-router";
 interface DashboardProps {
   usdtAmount?: number;
   usdcAmount?: number;
+  securityAmount?: number;
   transactionCount?: number;
   walletAddress?: number;
   inr?: number;
@@ -56,6 +57,7 @@ export default function DashboardPage() {
       setData({
         usdtAmount: response.data.data.total_usdt,
         usdcAmount: response.data.data.total_usdc,
+        securityAmount:response.data.data.security_amount,
         transactionCount: response.data.data.total_transactions,
         walletAddress: response.data.data.wallet_address,
         inr: response.data.data.total_inr,
@@ -63,6 +65,11 @@ export default function DashboardPage() {
         trxAmt: response.data.data.today_transactions_amount,
         profit: response.data.data.today_profit,
       });
+
+    const autoPlay = response?.data?.data?.auto_play_sound === "1" ? "1" : "0";
+    localStorage.setItem("auto_play_sound", autoPlay);
+
+
     } catch (error) {
       console.log(error);
     } finally {
@@ -259,7 +266,7 @@ export default function DashboardPage() {
         <MagicCard
           goto="funds-detail"
           gradientColor="#BB4D18"
-          className="p-5 rounded-2xl mb-10 cursor-pointer backdrop-blur-md border border-amber-500/40
+          className="p-5 rounded-2xl  cursor-pointer backdrop-blur-md border border-amber-500/40
                     bg-white/60 hover:bg-orange-50 hover:shadow-xl transition-all duration-300"
         >
           <CardHeader className="flex flex-row items-center justify-between pb-1">
@@ -277,6 +284,33 @@ export default function DashboardPage() {
             </p>
           </CardContent>
         </MagicCard>
+
+
+         <MagicCard
+          goto="funds-detail"
+          gradientColor="#f5b0bbff"
+          className="p-5 rounded-2xl mb-10 cursor-pointer backdrop-blur-md border border-red-500/40
+                    bg-white/60 hover:bg-primary-50 hover:shadow-xl transition-all duration-300"
+        >
+          <CardHeader className="flex flex-row items-center justify-between pb-1">
+            <CardTitle className="text-lg font-semibold text-red-700">
+              Security Deposit
+            </CardTitle>
+            <Wallet 
+              size={24}
+              className="text-red-600 animate-[pulse_2s_infinite]"
+            />
+          </CardHeader>
+          <CardContent>
+            <p className="md:text-4xl overflow-hidden text-2xl font-bold text-gray-900 tracking-tight">
+              $ {data?.securityAmount.toFixed(4) ?? 0.0}
+            </p>
+          </CardContent>
+        </MagicCard>
+
+
+
+        
 
 
         {/* Total Business */}

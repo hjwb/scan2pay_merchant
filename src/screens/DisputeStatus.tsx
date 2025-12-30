@@ -110,7 +110,14 @@ const DisputeStatus: React.FC = () => {
                     {item.disputed_status}
                   </TableCell>
                   <TableCell>
-                    {new Date(item.created_at).toLocaleString().slice(0, 10)}
+                   {new Date(item.created_at).toLocaleString("en-IN", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: true,
+})}
                   </TableCell>
 
                   <TableCell className="text-right">

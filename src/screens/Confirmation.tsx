@@ -11,9 +11,17 @@ import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/store/store";
 import { setTrxSuccess, setTrxFail } from "../../src/store/slices/modelSlice";
+
+import { useShowError } from "@/hooks/useShowError";
+//import { useShowSuccess } from "@/hooks/useShowSuccess";
+
 // import process from "@/"
 const Confirmation: React.FC = () => {
   const { orderid } = useParams();
+
+
+    const { showError } = useShowError();
+  //const { showSuccess } = useShowSuccess();
 
   const [loading, setLoading] = React.useState(true);
   const [loading2, setLoading2] = React.useState(false);
@@ -79,9 +87,11 @@ const Confirmation: React.FC = () => {
       );
 
       console.log(response.data);
-      if (response.data.status) {
+      if (response.data.status === true) {
         navigate("/dashboard");
         dispatch(setTrxSuccess({ showTrxSuccess: true }));
+      }else{
+           showError("Error", response.data.message);
       }
     } catch (error) {
       console.log(error);

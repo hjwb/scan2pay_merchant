@@ -20,6 +20,10 @@ export default function ProfilePage() {
   const [upiLoading, setUpiLoading] = useState(false);
   const [bankLoading, setBankLoading] = useState(false);
 
+   const [autoPlayEnabled, setAutoPlayEnabled] = useState<boolean>(() => {
+    return localStorage.getItem("auto_play_sound") === "1";
+  });
+
   const baseUrl = useSelector((state: RootState) => state?.consts?.baseUrl);
   const userData = useSelector((state: RootState) => state?.user?.userData);
   const token = useSelector((state: RootState) => state?.user?.token);
@@ -118,6 +122,52 @@ export default function ProfilePage() {
     }
   };
 
+
+
+  
+const toggleAutoPlay = async (enabled: boolean) => {
+  
+  setAutoPlayEnabled(enabled);
+  localStorage.setItem("auto_play_sound", enabled ? "1" : "0");
+
+ 
+
+  try {
+    
+    const response = await axios.post(
+      `${baseUrl}/merchant/update-upi`,
+      {
+        auto_play_sound: enabled ? "1" : "0",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.data?.status) {
+      setReload((prev) => !prev);
+       showSuccess(
+    `Audio setting ${enabled ? "enabled" : "disabled"} successfully`,
+    ""
+      );
+    } else {
+      throw new Error("API returned false status");
+    }
+  } catch (error) {
+    console.error(error);
+
+    
+    setAutoPlayEnabled(!enabled);
+    localStorage.setItem("auto_play_sound", !enabled ? "1" : "0");
+
+    showError("Failed to update audio setting", "");
+  }
+};
+
+
   return (
     <div className="mt-18 px-2 flex flex-col gap-4 max-w-lg mx-auto">
       <div className="border rounded-lg px-5 py-2 bg-[#4D43EF]/10 flex flex-col gap-3">
@@ -214,6 +264,64 @@ export default function ProfilePage() {
             {bankLoading ? "Saving..." : "Save Bank Details"}
           </Button>
         </div>
+
+
+
+<div className="border rounded-lg p-4 bg-white flex flex-col gap-3">
+      <h3 className="font-semibold text-base text-gray-800">
+        Sound Settings
+      </h3>
+
+     <div className="flex items-center justify-between">
+  <div className="flex flex-col">
+    <span className="text-sm font-medium text-gray-700">
+      Auto Play Sound
+    </span>
+
+    <span className="text-xs text-gray-500 transition-all">
+      {autoPlayEnabled
+        ? "Play sound automatically"
+        : "Sound will not play"}
+    </span>
+  </div>
+
+  <div className="flex items-center gap-3">
+    <span
+      className={`text-xs font-semibold transition-colors
+        ${autoPlayEnabled ? "text-green-600" : "text-gray-400"}`}
+    >
+      {autoPlayEnabled ? "ON" : "OFF"}
+    </span>
+
+    <label className="relative inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        checked={autoPlayEnabled}
+        onChange={(e) => toggleAutoPlay(e.target.checked)}
+        className="sr-only"
+      />
+
+      <div
+        className={`w-11 h-6 rounded-full transition-colors duration-300
+          ${autoPlayEnabled ? "bg-green-500" : "bg-gray-300"}`}
+      />
+
+      <div
+        className={`absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow
+          transition-transform duration-300
+          ${autoPlayEnabled ? "translate-x-5" : ""}`}
+      />
+    </label>
+  </div>
+</div>
+
+    </div>
+
+
+
+
+
+
       </div>
     </div>
   );

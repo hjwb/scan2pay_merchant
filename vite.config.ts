@@ -24,7 +24,7 @@ export default defineConfig({
       ],
       manifest: {
         name: "scan2pay.Mer",
-        short_name: "Scan2Pay",
+        short_name: "Merchant",
         description: "Scan2Pay application.",
         theme_color: "#ffffff",
         background_color: "#ffffff",

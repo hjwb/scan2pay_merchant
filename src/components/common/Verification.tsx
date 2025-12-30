@@ -52,9 +52,17 @@ const Verification: React.FC = () => {
       // registration: params.get("login_type"),
     };
 
-    // console.log(allParams);
+     console.log(allParams);
 
-    if (allParams.status !== "success") {
+    
+
+    if (allParams.status === "verification_required") {
+        navigate("/verify-merchant");
+        dispatch(setUserData({ userData: allParams?.data }));     
+        return;
+    }
+
+   if (allParams.status !== "success") {
       showError("Authntication Failed", "");
       navigate("/");
       return;

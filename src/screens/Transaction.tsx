@@ -22,6 +22,7 @@ interface Transaction {
   transaction_hash: string;
   payment_method: string;
   inr_amount: number;
+ created_at: string;
 }
 
 const Transaction: React.FC = () => {
@@ -71,6 +72,23 @@ const Transaction: React.FC = () => {
     // console.log(transaction.length)
   }, [count]);
 
+
+
+  const formatDate = (dateStr: string) =>
+  new Date(dateStr).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+const formatTime = (dateStr: string) =>
+  new Date(dateStr).toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+
   return (
     <div className="mt-24 px-2 flex flex-col gap-2 max-w-lg mx-auto">
       <div
@@ -119,6 +137,8 @@ const Transaction: React.FC = () => {
                   <TableHead>INR</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead className="text-center">Hash</TableHead>
+
+                   <TableHead>Date/Time</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -151,6 +171,14 @@ const Transaction: React.FC = () => {
                           <p className="w-full text-center">-</p>
                         )}
                       </TableCell>
+
+                      <TableCell>
+                      <div className="flex flex-col text-sm leading-tight">
+                        <span>{formatDate(item.created_at)}</span>
+                        <span className="text-gray-500">{formatTime(item.created_at)}</span>
+                      </div>
+                    </TableCell>
+
                     </TableRow>
                   );
                 })}

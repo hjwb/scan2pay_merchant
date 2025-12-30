@@ -68,7 +68,7 @@ export function LoginDialog() {
         showError("Google Authentication Failed.", "");
         return;
       }
-      // console.log(response.data);
+      console.log(response.data);
       window.location.href = response.data;
     } catch (error) {
       showError("Google Authentication Failed.", "");
@@ -218,9 +218,15 @@ export function LoginDialog() {
       }
 
       showSuccess("Login Successful.", "");
+
+     
+
+  
+
       dispatch(setUserData({ userData: response.data.data }));
       dispatch(setToken({ token: response.data.token }));
       dispatch(setIsUserConnected({ isConnected: true }));
+      
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
@@ -293,6 +299,7 @@ export function LoginDialog() {
       dispatch(setToken({ token: response.data.token }));
       dispatch(setUserData({ userData: response.data.data }));
       dispatch(setIsUserConnected({ isConnected: true }));
+    
       navigate("/dashboard");
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -341,7 +348,7 @@ export function LoginDialog() {
     >
       <DialogTrigger asChild>
         <Button className="w-full text-white bg-[#4D43EF] cursor-pointer transition ease-in-out duration-300">
-          Merchant Login
+          Merchant Login 
         </Button>
       </DialogTrigger>
 

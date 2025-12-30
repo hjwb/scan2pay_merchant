@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { FaCheckCircle } from "react-icons/fa";
-import { Copy } from "lucide-react";
+import { Copy,Share } from "lucide-react";
 import {
   Accordion,
   AccordionContent,
@@ -45,6 +45,35 @@ const OrderDetails: React.FC = () => {
     
     fetchDetails();
   }, []);
+
+
+
+  
+
+const handleShare = async () => {
+const shareText = `
+Order ID: ${order_id}
+Amount: ${data?.amount?.toFixed(4) ?? "0.0000"} USDT
+INR: ₹${data?.inr_amount?.toFixed(2) ?? "0.00"}
+Status: Completed
+Date: ${new Date().toLocaleString()}
+`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Share Successful",
+        text: shareText,
+      });
+    } catch (err) {
+      console.log("Share cancelled", err);
+    }
+  } else {
+    await navigator.clipboard.writeText(shareText);
+  
+  }
+};
+
 
   return (
     <div className="mt-24 px-2 flex flex-col gap-2 max-w-lg mx-auto">
@@ -104,13 +133,42 @@ const OrderDetails: React.FC = () => {
             />
           </p>
         </div>
-        <div className="flex items-center justify-between">
+        {/* <div className="flex items-center justify-between">
           <p className="font-semibold">Date</p>
           <p>
             {data?.created_at.slice(0, 10).split("-").reverse().join("-") ??
               "00-00-0000"}
           </p>
-        </div>
+        </div> */}
+        <div className="flex items-center justify-between">
+  <p className="font-semibold">Date</p>
+  <p>
+    {data?.created_at
+      ? new Date(data.created_at).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+      : "00-00-0000"}
+  </p>
+</div>
+
+<div className="flex items-center justify-between">
+  <p className="font-semibold">Time</p>
+  <p>
+    {data?.created_at
+      ? new Date(data.created_at).toLocaleTimeString("en-IN", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        })
+      : "00:00:00"}
+  </p>
+</div>
+
+
+       
       </div>
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
@@ -126,7 +184,7 @@ const OrderDetails: React.FC = () => {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      <div className="flex">
+      {/* <div className="flex">
         <Button
           onClick={() => {
             navigate("/transactions");
@@ -135,7 +193,28 @@ const OrderDetails: React.FC = () => {
         >
           Return Home
         </Button>
-      </div>
+      </div> */}
+
+      <div className="flex gap-3">
+  
+  <Button
+    onClick={() => navigate("/transaction")}
+    className="flex-1 bg-[#493FEE] hover:bg-[#493FEE]/80 cursor-pointer transition ease-in-out duration-300"
+  >
+    Return Home
+  </Button>
+
+  {/* Share */}
+  <Button
+    onClick={handleShare}
+    variant="outline"
+    className=" flex-1 hover:bg-[#493FEE]/90 cursor-pointer transition ease-in-out duration-300"
+  >
+    <Share  size={20} /> Share
+  </Button>
+</div>
+
+
     </div>
   );
 };
