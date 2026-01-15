@@ -225,7 +225,9 @@ export function LoginDialog() {
 
       dispatch(setUserData({ userData: response.data.data }));
       dispatch(setToken({ token: response.data.token }));
-      dispatch(setIsUserConnected({ isConnected: true }));
+      dispatch(setIsUserConnected({ isConnected: true }));      
+      localStorage.setItem("login_time", Date.now().toString());
+
       
       navigate("/dashboard");
     } catch (error) {
@@ -299,6 +301,9 @@ export function LoginDialog() {
       dispatch(setToken({ token: response.data.token }));
       dispatch(setUserData({ userData: response.data.data }));
       dispatch(setIsUserConnected({ isConnected: true }));
+    
+       localStorage.setItem("login_time", Date.now().toString());
+
     
       navigate("/dashboard");
     } catch (error) {
