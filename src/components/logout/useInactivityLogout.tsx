@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 
-const INACTIVITY_LIMIT = 60 * 60 * 1000; // 1 hour
+
+
+const INACTIVITY_LIMIT = 48 * 60 * 60 * 1000; // 48 hours
 
 export const useInactivityLogout = (
   enabled: boolean,
